@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <title>Tax Calculator</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="wrap">
         <div class="logo">Tax<span>Calc</span></div>
         <div class="sub">Калькулятор комиссии аукциона</div>
-    
+        
         <div class="card">
             <div class="field-label">Сумма лота</div>
             <div class="row">
@@ -34,6 +35,48 @@
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+        // Инициализируем Telegram
+        const tg = window.Telegram.WebApp;
+        
+        // Разворачиваем окно приложения на всю высоту
+        tg.expand();
+        tg.ready();
+
+        // Находим нужные элементы на странице
+        const calcButton = document.querySelector('.btn');
+        const inputElement = document.getElementById('number');
+        const resultElement = document.getElementById('resultat');
+
+        // Вешаем слушатель на кнопку "Рассчитать"
+        calcButton.addEventListener('click', () => {
+            // Используем небольшую задержку, чтобы функция Calc() из твоего script.js успела отработать и записать результат
+            setTimeout(() => {
+                const finalResult = resultElement.innerText;
+                const originalAmount = inputElement.value;
+
+                // Если результат не пустой, показываем главную кнопку Telegram
+                if (finalResult && finalResult !== "") {
+                    tg.MainButton.text = "Отправить в чат: " + finalResult + " ₽";
+                    tg.MainButton.show();
+                } else {
+                    tg.MainButton.hide();
+                }
+            }, 100);
+        });
+
+        // Что происходит, когда пользователь нажимает на главную кнопку Telegram
+        tg.MainButton.onClick(() => {
+            const finalResult = resultElement.innerText;
+            const originalAmount = inputElement.value;
+            
+            // Формируем текст сообщения для бота
+            const dataToSend = `📊 Расчет комиссии аукциона:\nСумма лота: ${originalAmount} ₽\nИтого на руки: ${finalResult} ₽`;
+            
+            // Отправляем данные боту и автоматически закрываем Web App
+            tg.sendData(dataToSend);
+        });
+    </script>
 </body>
 </html>
-
