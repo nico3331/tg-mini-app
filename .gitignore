@@ -1,0 +1,23 @@
+# Системные файлы (Windows, macOS)
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Настройки редакторов кода (VS Code, WebStorm и др.)
+.vscode/
+.idea/
+*.suo
+*.sln
+
+# Логи
+*.log
+
+# Папки сборки и зависимостей 
+# (на случай, если в будущем добавишь npm, минификацию или фреймворки)
+node_modules/
+dist/
+build/
+
+# Файлы с секретными данными
+.env
+.env.local
